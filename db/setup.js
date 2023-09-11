@@ -1,5 +1,5 @@
 require("dotenv").config()
-const { MongoClient } = require("mongodb");
+const mongoose = require("");
 
 //could add a conditional based on ENV being PROD or DEV
 const connectionURI = process.env.DB_CONNECTION || 'mongodb://localhost:27017';
