@@ -1,12 +1,18 @@
 const express = require('express')
 const cors = require('cors')
 const logger = require('morgan')
-
 const app = express()
 
+// Route Imports
+const notesRoute = require("./routes/notesRoute")
+
+// Middleware
 app.use(cors())
 app.use(express.json())
 app.use(logger('dev'))
+
+// TODO: Auth
+// TODO: Data Filter Middleware
 
 app.get('/', (req, res) => {
   res.json({
@@ -15,7 +21,10 @@ app.get('/', (req, res) => {
   })
 })
 
-// *CATCH ALL * (place last)
+// *ROUTES*
+app.use("/notes", notesRoute)
+
+// *CATCH ALL* (place last)
 app.get("*", (req, res) => {
   res.status(405).json({
     status: "405",
