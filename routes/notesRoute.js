@@ -3,11 +3,11 @@ const notesRouter = express.Router();
 
 const { notesByUsername, createNote, updateNote, noteByTitle, notesByTag, destroy } = require("../controllers/notesControllers")
 
-notesRouter.get("/", notesByUsername)
+notesRouter.get("/user/:username", notesByUsername)
 
-notesRouter.get("/:title", noteByTitle)
+notesRouter.get("/title/:title", noteByTitle)
 
-notesRouter.get("/:tag", notesByTag)
+notesRouter.get("/tag/:tag", notesByTag)
 
 notesRouter.post("/", createNote)
 // patching by id since the title can change

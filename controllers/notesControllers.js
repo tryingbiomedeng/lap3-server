@@ -1,11 +1,17 @@
 // IMPORT MODELS
 
 const notesByUsername = async (req, res) => {
-    const user = req.params.username
+    
     try {
-        res.status(200).json({
-            "success": true
+        const user = req.params.username
+        
+        if (user){
+            res.status(200).json({
+            "success": true,
+            "user": req.params.username 
         })
+    }
+        
     } catch (error) {
         res.status(404).json({
             "success": false,
@@ -24,15 +30,18 @@ const createNote = async (req, res) => {
     }
     */
    try {
-        res.status(201).json({
-            "success": true
+    if (req.body){
+
+    res.status(201).json({
+        "success": true
         })
+    }
    } catch (error) {
-        res.status(404).json({
-            "success": false,
-            "message": "Unable to create new note",
-            "error": error
-        })
+    res.status(404).json({
+        "success": false,
+        "message": "Unable to create new note",
+        "error": error
+    })
    }
 }
 
@@ -45,9 +54,12 @@ const updateNote = async (req, res) => {
     }
     */
     try {
+    if (req.params.id && req.body) {
         res.status(200).json({
             "success": true
         })
+    }
+        
    } catch (error) {
         res.status(404).json({
             "success": false,
@@ -68,9 +80,11 @@ const noteByTitle = async (req, res) => {
     }
     */
     try {
-        res.status(200).json({
+        if (req.params.title){
+            res.status(200).json({
             "success": true
         })
+    }
    } catch (error) {
         res.status(404).json({
             "success": false,
@@ -89,9 +103,10 @@ const notesByTag = async (req, res) => {
     }
     */
     try {
-        res.status(200).json({
+        if (req.params.tag)
+        {res.status(200).json({
             "success": true
-        })
+        })}
    } catch (error) {
         res.status(404).json({
             "success": false,
@@ -110,9 +125,11 @@ const destroy = async (req, res) => {
     }
     */
     try {
-        res.status(204).json({
+        if (req.params.id) {
+            res.status(204).json({
             "success": true
-        })
+            })
+        }
    } catch (error) {
         res.status(404).json({
             "success": false,

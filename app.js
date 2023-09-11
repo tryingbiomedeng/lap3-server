@@ -17,7 +17,7 @@ app.use(logger('dev'))
 app.get('/', (req, res) => {
   res.json({
     name: "Study App API",
-    description: "Welcme to your study buddy"
+    description: "Welcome to your study buddy"
   })
 })
 
