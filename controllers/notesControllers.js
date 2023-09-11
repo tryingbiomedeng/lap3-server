@@ -52,6 +52,16 @@ const notesByTag = async (req, res) => {
     */
 }
 
+const deleteById = async (req, res) => {
+    /* DELETE A NOTE DOCUMENT BASED ON ID
+
+    reqs = {
+        params: username
+        body: [searched string?]
+    }
+    */
+}
+
 // If users can search based on notes content
 // const NotesByContent = async (req, res) => {
 //     /* 
@@ -67,5 +77,6 @@ module.exports = {
     createNote,
     updateNote,
     noteByTitle,
-    notesByTag
+    notesByTag,
+    deleteById
 }
