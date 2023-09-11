@@ -16,6 +16,11 @@ app.get('/', (req, res) => {
 })
 
 // *CATCH ALL * (place last)
-app.get("*")
+app.get("*", (req, res) => {
+  res.status(405).json({
+    status: "405",
+    message: "Method Not Allowed"
+  })
+})
 
 module.exports = app
