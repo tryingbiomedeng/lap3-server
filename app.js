@@ -15,4 +15,7 @@ app.get('/', (req, res) => {
   })
 })
 
+// *CATCH ALL * (place last)
+app.get("*")
+
 module.exports = app
