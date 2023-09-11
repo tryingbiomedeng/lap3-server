@@ -1,13 +1,18 @@
 // IMPORT MODELS
 
 const notesByUsername = async (req, res) => {
-    /* GET ALL NOTES FOR A USER
-    
-    reqs = {
-        params: username
-        body: [searched string?]
+    const user = req.params.username
+    try {
+        res.status(200).json({
+            "success": true
+        })
+    } catch (error) {
+        res.status(404).json({
+            "success": false,
+            "message": "Notes for user not found",
+            "error": error
+        })
     }
-    */
 }
 
 const createNote = async (req, res) => {
@@ -18,6 +23,17 @@ const createNote = async (req, res) => {
         body: [searched string?]
     }
     */
+   try {
+        res.status(201).json({
+            "success": true
+        })
+   } catch (error) {
+        res.status(404).json({
+            "success": false,
+            "message": "Unable to create new note",
+            "error": error
+        })
+   }
 }
 
 const updateNote = async (req, res) => {
@@ -28,6 +44,17 @@ const updateNote = async (req, res) => {
         body: [searched string?]
     }
     */
+    try {
+        res.status(200).json({
+            "success": true
+        })
+   } catch (error) {
+        res.status(404).json({
+            "success": false,
+            "message": "Unable to update note",
+            "error": error
+        })
+   }
 }
 
 
@@ -40,6 +67,17 @@ const noteByTitle = async (req, res) => {
         body: [searched string?]
     }
     */
+    try {
+        res.status(200).json({
+            "success": true
+        })
+   } catch (error) {
+        res.status(404).json({
+            "success": false,
+            "message": "Note not found",
+            "error": error
+        })
+   }
 }
 
 const notesByTag = async (req, res) => {
@@ -50,9 +88,20 @@ const notesByTag = async (req, res) => {
         body: [searched string?]
     }
     */
+    try {
+        res.status(200).json({
+            "success": true
+        })
+   } catch (error) {
+        res.status(404).json({
+            "success": false,
+            "message": "Note not found",
+            "error": error
+        })
+   }
 }
 
-const deleteById = async (req, res) => {
+const destroy = async (req, res) => {
     /* DELETE A NOTE DOCUMENT BASED ON ID
 
     reqs = {
@@ -60,6 +109,17 @@ const deleteById = async (req, res) => {
         body: [searched string?]
     }
     */
+    try {
+        res.status(204).json({
+            "success": true
+        })
+   } catch (error) {
+        res.status(404).json({
+            "success": false,
+            "message": "Unable to delete note",
+            "error": error
+        })
+   }
 }
 
 // If users can search based on notes content
@@ -78,5 +138,5 @@ module.exports = {
     updateNote,
     noteByTitle,
     notesByTag,
-    deleteById
+    destroy
 }

@@ -1,7 +1,7 @@
 const express = require("express");
 const notesRouter = express.Router();
 
-const { notesByUsername, createNote, updateNote, noteByTitle, notesByTag, deleteById } = require("../controllers/notesControllers")
+const { notesByUsername, createNote, updateNote, noteByTitle, notesByTag, destroy } = require("../controllers/notesControllers")
 
 notesRouter.get("/", notesByUsername)
 
@@ -13,6 +13,6 @@ notesRouter.post("/", createNote)
 // patching by id since the title can change
 notesRouter.patch("/:id", updateNote)
 
-notesRouter.delete("/:id", deleteById)
+notesRouter.delete("/:id", destroy)
 
 module.exports = notesRouter 
