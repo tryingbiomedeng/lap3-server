@@ -24,10 +24,31 @@ app.get('/', (req, res) => {
 // *ROUTES*
 app.use("/notes", notesRoute)
 
-// *CATCH ALL* (place last)
+// *CATCH ALL FOR PUT & POST* (place last)
+app.put("*", (req, res) => {
+  res.status(405).json({
+    status: res.statusCode,
+    message: "Method Not Allowed"
+  })
+})
+
+app.post("*", (req, res) => {
+  res.status(405).json({
+    status: res.statusCode,
+    message: "Method Not Allowed"
+  })
+})
+
 app.get("*", (req, res) => {
   res.status(405).json({
-    status: "405",
+    status: res.statusCode,
+    message: "Method Not Allowed"
+  })
+})
+
+app.delete("*", (req, res) => {
+  res.status(405).json({
+    status: res.statusCode,
     message: "Method Not Allowed"
   })
 })
