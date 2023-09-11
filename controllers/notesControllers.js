@@ -1,14 +1,16 @@
 // IMPORT MODELS
+const mongoose = require("mongoose")
+const Note = require("../Models/NotesModel")
 
 const notesByUsername = async (req, res) => {
     
     try {
         const user = req.params.username
-        
+        const notes = await Note.find({username: {$eq: user}})
         if (user){
             res.status(200).json({
             "success": true,
-            "user": req.params.username 
+            "user": notes
         })
     }
         
@@ -22,18 +24,14 @@ const notesByUsername = async (req, res) => {
 }
 
 const createNote = async (req, res) => {
-    /* POSTS NEW NOTES TO DB
-    
-    reqs = {
-        params: username
-        body: [searched string?]
-    }
-    */
+    // POSTS NEW NOTES TO DB
+
    try {
     if (req.body){
-
+        const note = await Note.create(req.body)
     res.status(201).json({
-        "success": true
+        "success": true,
+        "respond": note
         })
     }
    } catch (error) {
