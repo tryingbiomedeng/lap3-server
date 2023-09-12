@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node app.js",
+    "seed": "node db/seedPlanner.js"
   },
   "keywords": [],
   "author": "",
@@ -14,8 +15,9 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "morgan": "^1.10.0",
-    "pg": "^8.11.2"
+    "mongodb": "^6.0.0",
+    "mongoose": "^7.5.1",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
