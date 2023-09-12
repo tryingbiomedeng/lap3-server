@@ -35,4 +35,4 @@ const seedDB = async () => {
     }
 }
 
-// seedDB()
+seedDB()
