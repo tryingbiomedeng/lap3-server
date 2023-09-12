@@ -5,7 +5,7 @@ const { notesByUsername, createNote, updateNote, noteByTitle, notesByTag, destro
 
 notesRouter.get("/user/:username", notesByUsername)
 
-notesRouter.get("/title/:title", noteByTitle)
+notesRouter.get("/title/", noteByTitle)
 
 notesRouter.get("/tag/:tag", notesByTag)
 
