@@ -65,7 +65,6 @@ const updateNote = async (req, res) => {
                 upsert: true
             }
         )
-            // ).exec()
         res.status(200).json({
             "success": true,
             "response": updatedNote
@@ -84,17 +83,15 @@ const updateNote = async (req, res) => {
 
 
 const noteByTitle = async (req, res) => {
-    /* GET ONE NOTE BASED ON TITLE
-    
-    reqs = {
-        params: username
-        body: [searched string?]
-    }
-    */
     try {
-        if (req.params.title){
-            res.status(200).json({
-            "success": true
+        if (req.body){
+        const data = req.body
+        //RegExp 2nd param is for making regex filter non-case-sensitive
+        const titleRegex = new RegExp(data.title, 'i')
+        const notes = await Note.find({username: {$eq: data.username}, title: {$regex: titleRegex}})
+        res.status(200).json({
+            "success": true,
+            "response": notes
         })
     }
    } catch (error) {
