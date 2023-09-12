@@ -3,14 +3,14 @@ const mongoose = require("mongoose")
 const Note = require("../Models/NotesModel")
 
 const notesByUsername = async (req, res) => {
-    
+    //done
     try {
         const user = req.params.username
         const notes = await Note.find({username: {$eq: user}})
         if (user){
             res.status(200).json({
             "success": true,
-            "user": notes
+            "response": notes
         })
     }
         
@@ -24,14 +24,13 @@ const notesByUsername = async (req, res) => {
 }
 
 const createNote = async (req, res) => {
-    // POSTS NEW NOTES TO DB
-
+    //done
    try {
     if (req.body){
         const note = await Note.create(req.body)
     res.status(201).json({
         "success": true,
-        "respond": note
+        "response": note
         })
     }
    } catch (error) {
@@ -44,18 +43,33 @@ const createNote = async (req, res) => {
 }
 
 const updateNote = async (req, res) => {
-    /* UPDATES A NOTE IN DB
-    
-    reqs = {
-        params: username
-        body: [searched string?]
-    }
-    */
+    //done
     try {
     if (req.params.id && req.body) {
+        const idx = req.params.id
+        const data = req.body
+        // excl username, date created
+        const updatedNote = await Note.findByIdAndUpdate(
+            {_id: idx}, 
+            {
+                $set: {
+                    title: data.title, 
+                    subject: data.subject,
+                    topic_tags: [data.topic_tags],
+                    content: data.content,
+                    last_update: data.last_update
+                }
+            }, 
+            { 
+                new: true,
+                upsert: true
+            }
+        )
+            // ).exec()
         res.status(200).json({
-            "success": true
-        })
+            "success": true,
+            "response": updatedNote
+        });
     }
         
    } catch (error) {
