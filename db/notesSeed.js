@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const Note = require("../Models/NotesModel")
+const Note = require("../Models/NotesModel");
+const connectDB = require("./setup");
 const seedDB = async () => {
     try {
-        // await mongoose.connect("mongodb://localhost:9000")
         console.log("Awaiting Seed 📝🌱")
-        // await client.db('studyApp-db').collection('notes_db').drop()
+        await connectDB();
         await Note.insertMany([
             {
                 username: "user1", 
