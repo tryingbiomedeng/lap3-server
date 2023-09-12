@@ -6,6 +6,8 @@ const app = express()
 // Route Imports
 const notesRoute = require("./routes/notesRoute")
 const plannerRoute = require("./routes/plannerRoute")
+const authRoute = require('./routes/authRoute')
+const protectedRoute = require('./routes/protectedRoute')
 
 // Middleware
 app.use(cors())
@@ -26,7 +28,8 @@ app.get('/', (req, res) => {
 
 app.use("/notes", notesRoute)
 app.use("/planners", plannerRoute)
-
+app.use('/auth', authRoute)
+app.use('/protected', protectedRoute)
 
 // *CATCH ALL FOR PUT & POST* (place last)
 app.put("*", (req, res) => {
