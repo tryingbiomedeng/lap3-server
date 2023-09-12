@@ -1,4 +1,5 @@
 require("dotenv").config({path: './test/.env.test'})
+const mongoose = require("mongoose")
 const notesController = require("../../controllers/notesControllers")
 
 const Note = require("../../Models/NotesModel")
@@ -7,6 +8,7 @@ const Note = require("../../Models/NotesModel")
 //basic api imports
 const request = require("supertest");
 const server = require("../../app");
+const { response } = require("express");
 
 describe("Controllers tests", () => {
     let app 
@@ -86,6 +88,19 @@ describe("Controllers tests", () => {
 
             expect(response.statusCode).toBe(200);
             expect(response.body).toEqual({success: true, response: sampleData[0].full2})
+
+        })
+
+        test("Should return Status 404 and correct response for unsuccessful requests", async () => {
+
+            const findQuery = jest.spyOn(Note, 'find')
+                .mockRejectedValueOnce("error")
+
+            const response = await request(app).get("/notes/user/username1")
+                .set({'Accept': 'application/json', 'Authorization': 'tokenValue' })
+
+            expect(response.statusCode).toBe(404);
+            expect(response.body).toEqual({success: false, message: "Notes for user not found", "error": "error"})
 
         })
 
