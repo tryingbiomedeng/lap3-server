@@ -5,6 +5,7 @@ const app = express()
 
 // Route Imports
 const notesRoute = require("./routes/notesRoute")
+const plannerRoute = require("./routes/plannerRoute")
 
 // Middleware
 app.use(cors())
@@ -22,9 +23,9 @@ app.get('/', (req, res) => {
 })
 
 // *ROUTES*
+
 app.use("/notes", notesRoute)
-
-
+app.use("/planner", plannerRoute)
 
 
 // *CATCH ALL FOR PUT & POST* (place last)
@@ -55,5 +56,38 @@ app.delete("*", (req, res) => {
     message: "Method Not Allowed"
   })
 })
+
+
+// Planner routes
+
+
+
+// app.get("*", (req, res) => {
+//   res.status(405).json({
+//     status: res.statusCode,
+//     message: "Method not allowed"
+//   })
+// })
+
+// app.post("*", (req, res) => {
+//   res.status(405).json({
+//     status: res.statusCode,
+//     message: "Method not allowed"
+//   })
+// })
+
+// app.put("*", (req, res) => {
+//   res.status(405).json({
+//     status: res.statusCode,
+//     message: "Method not allowed"
+//   })
+// })
+
+// app.delete("*", (req, res) => {
+//   res.status(405).json({
+//     status: res.statusCode,
+//     message: "Method not allowed"
+//   })
+// })
 
 module.exports = app
