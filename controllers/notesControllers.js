@@ -55,7 +55,7 @@ const updateNote = async (req, res) => {
                 $set: {
                     title: data.title, 
                     subject: data.subject,
-                    topic_tags: [data.topic_tags],
+                    topic_tags: data.topic_tags,
                     content: data.content,
                     last_update: data.last_update
                 }
