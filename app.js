@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 // *ROUTES*
 
 app.use("/notes", notesRoute)
-app.use("/planner", plannerRoute)
+app.use("/planners", plannerRoute)
 
 
 // *CATCH ALL FOR PUT & POST* (place last)

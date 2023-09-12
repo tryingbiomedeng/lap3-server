@@ -46,13 +46,19 @@ const plannerByUsername = async (req, res) => {
 
 const createPlanner = async (req, res) => {
 	try {
-		if (req.body){
+    const { username, content, date, tag } = req.body
+
+    if (!username || !content || !date || !tag) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields in the request body",
+      })
+    }
 			const planner = await Planner.create(req.body)
 		res.status(201).json({
 			"success": true,
 			"respond": planner
 		})
-		}
 	} catch (err) {
 		res.status(404).json({
 			"success": false,

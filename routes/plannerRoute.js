@@ -5,9 +5,9 @@ const { plannerByUsername, createPlanner, updatePlanner, plannerByDate, plannerB
 
 plannerRouter.get("/", getAll)
 plannerRouter.get('/:id', getById);
-plannerRouter.get("/user/:username", plannerByUsername)
-plannerRouter.get("/date/:date", plannerByDate)
-plannerRouter.get("/tag/:tag", plannerByTag)
+plannerRouter.get("/:username", plannerByUsername)
+plannerRouter.get("/:date", plannerByDate)
+plannerRouter.get("/:tag", plannerByTag)
 plannerRouter.post("/", createPlanner)
 plannerRouter.patch("/:id", updatePlanner)
 plannerRouter.delete("/:id", destroy)
