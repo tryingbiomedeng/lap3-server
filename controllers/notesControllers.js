@@ -83,6 +83,7 @@ const updateNote = async (req, res) => {
 
 
 const noteByTitle = async (req, res) => {
+    //done
     try {
         if (req.body){
         const data = req.body
@@ -125,17 +126,13 @@ const notesByTag = async (req, res) => {
 }
 
 const destroy = async (req, res) => {
-    /* DELETE A NOTE DOCUMENT BASED ON ID
-
-    reqs = {
-        params: username
-        body: [searched string?]
-    }
-    */
     try {
         if (req.params.id) {
+            const idx = req.params.id     
+            const result = await Note.findByIdAndDelete(idx)
             res.status(204).json({
-            "success": true
+            "success": true,
+            "response": result
             })
         }
    } catch (error) {
