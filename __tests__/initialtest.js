@@ -1,8 +1,8 @@
 const express = require('express')
 const { mockRequest, mockResponse } = require('jest-mock-req-res')
 const mongoose = require('mongoose')
-const app = require('./app')
-const Planner = require('./db/setup')
+const app = require('../app')
+const Planner = require('../db/setup')
 
 jest.mock('mongoose')
 

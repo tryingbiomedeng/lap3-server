@@ -9,37 +9,59 @@ const port = process.env.PORT
 // connect to mongo
 connectDB();
 
-
 const app = express()
 
+// Route Imports
+const notesRoute = require("./routes/notesRoute")
+
+// Middleware
 app.use(cors())
 app.use(express.json())
 app.use(logger('dev'))
 
+// TODO: Auth
+// TODO: Data Filter Middleware
+
 app.get('/', (req, res) => {
   res.json({
     name: "Study App API",
-    description: "Welcme to your study buddy"
+    description: "Welcome to your study buddy"
   })
 })
 
-// app.get('/planner', async (req, res) => {
-//   try {
-//     const planner = await Planner.find({});
-//     res.status(200).json(planner);
-//   } catch (error) {
-//     console.error('Error retrieving planner data:', error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// })
+// *ROUTES*
+app.use("/notes", notesRoute)
 
 
-mongoose.connection.once('open', () => {
-  console.log('connected to MongoDB')
-  app.listen(port, () => {
-    console.log(`API running on port ${port}`)
+
+
+// *CATCH ALL FOR PUT & POST* (place last)
+app.put("*", (req, res) => {
+  res.status(405).json({
+    status: res.statusCode,
+    message: "Method Not Allowed"
   })
 })
 
+app.post("*", (req, res) => {
+  res.status(405).json({
+    status: res.statusCode,
+    message: "Method Not Allowed"
+  })
+})
 
-// module.exports = app
+app.get("*", (req, res) => {
+  res.status(405).json({
+    status: res.statusCode,
+    message: "Method Not Allowed"
+  })
+})
+
+app.delete("*", (req, res) => {
+  res.status(405).json({
+    status: res.statusCode,
+    message: "Method Not Allowed"
+  })
+})
+
+module.exports = app
