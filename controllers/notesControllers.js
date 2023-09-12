@@ -104,18 +104,17 @@ const noteByTitle = async (req, res) => {
 }
 
 const notesByTag = async (req, res) => {
-    /* GET ALL NOTES BASED ON TAG && USER
-
-    reqs = {
-        params: username
-        body: [searched string?]
-    }
-    */
+    //done
     try {
-        if (req.params.tag)
-        {res.status(200).json({
-            "success": true
-        })}
+        if (req.params.tag) {
+            const username = req.headers.username
+            const tagx = req.params.tag
+            const notes = await Note.find({username: {$eq: username}, topic_tags: {$eq: tagx}})
+            res.status(200).json({
+            "success": true,
+            "response": notes
+            })
+        }
    } catch (error) {
         res.status(404).json({
             "success": false,
