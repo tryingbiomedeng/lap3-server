@@ -1,18 +1,11 @@
-require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const logger = require('morgan')
-const mongoose = require('mongoose')
-const connectDB = require('./db/setup')
-const port = process.env.PORT
-
-// connect to mongo
-connectDB();
-
 const app = express()
 
 // Route Imports
 const notesRoute = require("./routes/notesRoute")
+const plannerRoute = require("./routes/plannerRoute")
 
 // Middleware
 app.use(cors())
@@ -30,9 +23,9 @@ app.get('/', (req, res) => {
 })
 
 // *ROUTES*
+
 app.use("/notes", notesRoute)
-
-
+app.use("/planner", plannerRoute)
 
 
 // *CATCH ALL FOR PUT & POST* (place last)
@@ -63,5 +56,38 @@ app.delete("*", (req, res) => {
     message: "Method Not Allowed"
   })
 })
+
+
+// Planner routes
+
+
+
+// app.get("*", (req, res) => {
+//   res.status(405).json({
+//     status: res.statusCode,
+//     message: "Method not allowed"
+//   })
+// })
+
+// app.post("*", (req, res) => {
+//   res.status(405).json({
+//     status: res.statusCode,
+//     message: "Method not allowed"
+//   })
+// })
+
+// app.put("*", (req, res) => {
+//   res.status(405).json({
+//     status: res.statusCode,
+//     message: "Method not allowed"
+//   })
+// })
+
+// app.delete("*", (req, res) => {
+//   res.status(405).json({
+//     status: res.statusCode,
+//     message: "Method not allowed"
+//   })
+// })
 
 module.exports = app
