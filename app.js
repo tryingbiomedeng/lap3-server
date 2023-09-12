@@ -24,6 +24,9 @@ app.get('/', (req, res) => {
 // *ROUTES*
 app.use("/notes", notesRoute)
 
+
+
+
 // *CATCH ALL FOR PUT & POST* (place last)
 app.put("*", (req, res) => {
   res.status(405).json({

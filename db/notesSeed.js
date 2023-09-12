@@ -1,10 +1,13 @@
 const mongoose = require("mongoose");
+// import Models for seeding
 const Note = require("../Models/NotesModel");
 const connectDB = require("./setup");
 const seedDB = async () => {
     try {
-        console.log("Awaiting Seed 📝🌱")
+        console.log("Planting Seeds 🌱")
         await connectDB();
+        //notes seed
+        console.log("Awaiting Note Seed 📝🌱")
         await Note.insertMany([
             {
                 username: "user1", 
@@ -28,6 +31,9 @@ const seedDB = async () => {
                 content: "this is the Greatest Of All Notes (G.O.A.N)"
             }
         ])
+        // add other seeds below using code from line 10 down await <Model>.insertMany([array])
+
+        //this code from this line downward stays
         console.log("DB Seeded 🌾")
         await mongoose.disconnect()
     } catch (error) {
