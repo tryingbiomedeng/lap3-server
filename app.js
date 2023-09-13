@@ -12,7 +12,12 @@ const protectedRoute = require('./routes/protectedRoute')
 // Middleware
 app.use(cors())
 app.use(express.json())
-app.use(logger('dev'))
+
+app.use(logger('dev', {
+  skip: (req, res) => {
+    return process.env.NODE_ENV === 'test'
+  }
+}))
 
 // TODO: Auth
 // TODO: Data Filter Middleware
