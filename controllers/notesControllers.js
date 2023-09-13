@@ -86,10 +86,14 @@ const updateNote = async (req, res) => {
 
 const noteByTitle = async (req, res) => {
    try {
+        const username = await Token.find({
+            token: {$eq: req.headers.authorization}}, 
+            {username: 1, _id: 0})
+
         const data = req.body
         //RegExp 2nd param is for making regex filter non-case-sensitive
         const titleRegex = new RegExp(data.title, 'i')
-        const notes = await Note.find({username: {$eq: data.username}, title: {$regex: titleRegex}})
+        const notes = await Note.find({username: {$eq: username[0].username}, title: {$regex: titleRegex}})
         res.status(200).json({
             "success": true,
             "response": notes
@@ -105,9 +109,12 @@ const noteByTitle = async (req, res) => {
 
 const notesByTag = async (req, res) => {
     try {
-        const username = req.headers.username
+        const username = await Token.find({
+            token: {$eq: req.headers.authorization}}, 
+            {username: 1, _id: 0})
+
         const tagx = req.params.tag
-        const notes = await Note.find({username: {$eq: username}, topic_tags: {$eq: tagx}})
+        const notes = await Note.find({username: {$eq: username[0].username}, topic_tags: {$eq: tagx}})
         res.status(200).json({
         "success": true,
         "response": notes
@@ -125,6 +132,10 @@ const destroy = async (req, res) => {
    try {
         const idx = req.params.id     
         const result = await Note.findByIdAndDelete(idx)
+        console.log(result)
+        if (!result) {
+            throw new Error("Note ID not found")
+        }
         res.status(204).json({
         "success": true,
         "response": result
@@ -132,7 +143,7 @@ const destroy = async (req, res) => {
    } catch (error) {
         res.status(404).json({
             "success": false,
-            "message": "Unable to delete note",
+            "message": "Unable to delete note. " + error.message,
             "error": error
         })
    }

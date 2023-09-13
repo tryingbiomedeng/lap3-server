@@ -1,14 +1,13 @@
 const express = require("express");
 const notesRouter = express.Router();
-const authenticator = require("../middleware/authenticator")
 
 const { notesByUsername, createNote, updateNote, noteByTitle, notesByTag, destroy } = require("../controllers/notesControllers")
 
 notesRouter.get("/user/:username", notesByUsername)
 
-notesRouter.get("/title", noteByTitle)
-
 notesRouter.get("/tag/:tag", notesByTag)
+
+notesRouter.post("/title", noteByTitle)
 
 notesRouter.post("/", createNote)
 // patching by id since the title can change

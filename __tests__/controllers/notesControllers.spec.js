@@ -108,14 +108,14 @@ describe("Controllers tests", () => {
         })
     }),
 
-    describe("GET /notes/title TESTS",() => {
+    describe("POST /notes/title TESTS",() => {
         
         test("Should return trigger the Note.find() within the notesControllers.js", async () => {
 
             const findQuery = jest.spyOn(Note, 'find')
                 .mockResolvedValueOnce(sampleData[0].full2)
 
-            const response = await request(app).get(`/notes/title`)
+            const response = await request(app).post(`/notes/title`)
                 .set({'Accept': 'application/json', 'Authorization': 'tokenValue' })
                 .send({title: sampleData[0].full2.title})
 
@@ -127,7 +127,7 @@ describe("Controllers tests", () => {
             const findQuery = jest.spyOn(Note, 'find')
                 .mockResolvedValueOnce(sampleData[0].full2)
 
-            const response = await request(app).get(`/notes/title`)
+            const response = await request(app).post(`/notes/title`)
                 .set({'Accept': 'application/json', 'Authorization': 'tokenValue' })
                 .send({title: sampleData[0].full2.title})
 
@@ -140,7 +140,7 @@ describe("Controllers tests", () => {
             const findQuery = jest.spyOn(Note, 'find')
                 .mockRejectedValueOnce("error")
 
-            const response = await request(app).get(`/notes/title`)
+            const response = await request(app).post(`/notes/title`)
                 .set({'Accept': 'application/json', 'Authorization': 'tokenValue' })
 
             expect(response.statusCode).toBe(404);
