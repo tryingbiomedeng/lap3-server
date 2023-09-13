@@ -19,7 +19,7 @@ app.use(logger('dev', {
   }
 }))
 
-// TODO: Auth
+
 // TODO: Data Filter Middleware
 
 app.get('/', (req, res) => {
@@ -64,38 +64,5 @@ app.delete("*", (req, res) => {
     message: "Method Not Allowed"
   })
 })
-
-
-// Planner routes
-
-
-
-// app.get("*", (req, res) => {
-//   res.status(405).json({
-//     status: res.statusCode,
-//     message: "Method not allowed"
-//   })
-// })
-
-// app.post("*", (req, res) => {
-//   res.status(405).json({
-//     status: res.statusCode,
-//     message: "Method not allowed"
-//   })
-// })
-
-// app.put("*", (req, res) => {
-//   res.status(405).json({
-//     status: res.statusCode,
-//     message: "Method not allowed"
-//   })
-// })
-
-// app.delete("*", (req, res) => {
-//   res.status(405).json({
-//     status: res.statusCode,
-//     message: "Method not allowed"
-//   })
-// })
 
 module.exports = app
