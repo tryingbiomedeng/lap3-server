@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 
 // *ROUTES*
 
-app.use("/notes", notesRoute)
+app.use("/notes", authenticator, notesRoute)
 app.use("/planners", plannerRoute)
 app.use('/auth', authRoute)
 app.use('/protected', protectedRoute)
