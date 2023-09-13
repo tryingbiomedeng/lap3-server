@@ -25,6 +25,7 @@ async function login(req, res) {
     if (!validPassword) return res.status(401).send('Invalid username or password.')
 
     const token = jwt.sign({ _id: user._id }, secretKey)
+    console.log(token)
     res.json({ token })
   } catch (err) {
     res.status(500).send(err.message)
