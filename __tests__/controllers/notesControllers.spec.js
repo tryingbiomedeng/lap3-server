@@ -109,10 +109,6 @@ describe("Controllers tests", () => {
     }),
 
     describe("GET /notes/title TESTS",() => {
-
-        beforeEach(() => {
-            jest.clearAllMocks()
-        })
         
         test("Should return trigger the Note.find() within the notesControllers.js", async () => {
 
@@ -154,10 +150,6 @@ describe("Controllers tests", () => {
     }),
 
     describe("GET /notes/tag/:tag test", () => {
-
-        afterEach(() => {
-            jest.clearAllMocks()
-        })
 
         test("Should return trigger the Note.find() within the notesControllers.js", async () => { 
 
