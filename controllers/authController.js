@@ -21,7 +21,7 @@ async function register(req, res) {
       message: err.message,
       error: err
     })
-  }
+  } 
 }
 
 async function login(req, res) {
@@ -32,7 +32,7 @@ async function login(req, res) {
 
     const validPassword = await bcrypt.compare(password, user.password)
     if (!validPassword) return res.status(401).send('Invalid username or password.')
-
+ 
     const token = jwt.sign({ _id: user._id }, secretKey)
     const newToken = await new Token(
       {
