@@ -23,13 +23,20 @@ const notesByUsername = async (req, res) => {
 
 const createNote = async (req, res) => {try {
     const { title, subject, topic_tags, content } = req.body
-    const username = await Token.find(
-        {token: {$eq: req.headers.authorization}}, 
-        {username: 1, _id: 0}
+    const username = await Token.find({
+        token: {$eq: req.headers.authorization}
+    }, {username: 1, _id: 0}
     )
 
-    const newNote = new Note({username: username[0].username, title: title, subject: subject, topic_tags: topic_tags, content: content})
+    const newNote = new Note({
+        username: username[0].username, 
+        title: title, 
+        subject: subject, 
+        topic_tags: topic_tags, 
+        content: content
+    })
     const response = await newNote.save()
+
     res.status(201).json({
         "success": true,
         "response": response
