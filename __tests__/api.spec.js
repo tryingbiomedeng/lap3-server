@@ -4,9 +4,6 @@ require("dotenv").config({path: './test/.env.test'})
 const request = require("supertest");
 const server = require("../app");
 
-// Controller imports
-// const notesControllers = require("../../controllers/notesControllers")
-
 
 // TODO: Auth Imports
 
@@ -61,28 +58,5 @@ describe("API tests", () => {
             expect(response.statusCode).toBe(405)
             expect(response.body).toEqual({status: 405, message: "Method Not Allowed"})
         })
-
     })
-    
-    // describe('Notes controllers tests', () => {
-
-    //     beforeEach(() => {
-    //         // jest.mock("../controllers/notesControllers/")
-    //     })
-
-    //     afterEach(() => {
-    //         jest.clearAllMocks();
-    //     })
-
-
-    //     test("should call the 'notesByUsername' controller for '/notes/user/:username'", async () => {
-
-            
-
-    //         const response = await request(app).get("/user/:username")
-    //         expect(mockNotesByUsername).toHaveBeenCalledTimes(1)
-    //      })
-        
-    // })
-    
 })
