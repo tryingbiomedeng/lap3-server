@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
 const secretKey = crypto.randomBytes(64).toString('hex')
+const Token = require("../Models/TokenModel")
 
 async function register(req, res) {
   try {
