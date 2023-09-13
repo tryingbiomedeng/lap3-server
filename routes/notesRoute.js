@@ -1,5 +1,6 @@
 const express = require("express");
 const notesRouter = express.Router();
+const authenticator = require("../middleware/authenticator")
 
 const { notesByUsername, createNote, updateNote, noteByTitle, notesByTag, destroy } = require("../controllers/notesControllers")
 

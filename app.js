@@ -8,6 +8,7 @@ const notesRoute = require("./routes/notesRoute")
 const plannerRoute = require("./routes/plannerRoute")
 const authRoute = require('./routes/authRoute')
 const protectedRoute = require('./routes/protectedRoute')
+const authenticator = require("./middleware/authenticator")
 
 // Middleware
 app.use(cors())

@@ -52,11 +52,13 @@ async function login(req, res) {
 
 async function logout(req, res) {
   try {
+    
     const authorization = req.headers.authorization
     const deletedToken = await Token.findOneAndDelete({token: authorization})
     if (deletedToken.deletedCount === 0) {
       throw new Error
-    }
+    } 
+    console.log("hit")
     res.status(200).json({
       "success": true,
       "response": deletedToken
