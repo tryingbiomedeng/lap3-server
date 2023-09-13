@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   logged_in: {type: Boolean, required: true, default: false}
 },
-{timestamps: true}
+{timestamps: true} 
 )
 
 userSchema.pre('save', async function (next) {
