@@ -8,6 +8,7 @@ const Token = require("../Models/TokenModel")
 async function register(req, res) {
   try {
     const { username, password } = req.body
+    // password processing done within User Model
     const user = new User({ username, password })
     await user.save()
     res.sendStatus(201)
@@ -26,8 +27,18 @@ async function login(req, res) {
     if (!validPassword) return res.status(401).send('Invalid username or password.')
 
     const token = jwt.sign({ _id: user._id }, secretKey)
-    // const storedToken = await Token.
-    res.json({ token })
+    const newToken = await new Token(
+      {
+        username: username, 
+        token: token, 
+        date_created: Date.now()
+      }
+    );
+    newToken.save()
+    res.status(201).json({
+      "success": true,
+      "response": newToken.token
+    })
   } catch (err) {
     res.status(500).send(err.message)
   }
