@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "seed-planner": "node db/plannerSeed.js",
     "start-testing-db": "docker run --rm -d -p 9090:27017 --name testing-db mongo",
     "seed-notes": "node db/notesSeed.js",
     "test-watch": "jest --watch",
@@ -15,9 +16,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.1",
     "morgan": "^1.10.0"
   },
