@@ -10,10 +10,17 @@ async function register(req, res) {
     const { username, password } = req.body
     // password processing done within User Model
     const user = new User({ username, password })
-    await user.save()
-    res.sendStatus(201)
+    const response = await user.save()
+    res.Status(201).json({
+      success: true,
+      response: response
+    })
   } catch (err) {
-    res.status(400).send(err.message)
+    res.status(400).json({
+      success: false,
+      message: err.message,
+      error: err
+    })
   }
 }
 
