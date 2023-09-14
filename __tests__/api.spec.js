@@ -1,6 +1,6 @@
 require("dotenv").config({path: './test/.env.test'})
-const Note = require("../../Models/NotesModel")
-const Token = require("../../Models/TokenModel")
+const Note = require("../Models/NotesModel")
+const Token = require("../Models/TokenModel")
 
 //basic api imports
 const request = require("supertest");
@@ -12,8 +12,8 @@ const server = require("../app");
 // TODO Middleware Imports
 const authenticator = require("../middleware/authenticator")
 
-jest.mock("../../Models/TokenModel")
-jest.mock("../../Models/NotesModel")
+jest.mock("../Models/TokenModel")
+jest.mock("../Models/NotesModel")
 
 // TODO Security Imports
 
@@ -67,7 +67,7 @@ describe("API tests", () => {
     })
 })
 
-describe('authenticator middleware', () => {
+describe('authenticator middleware tests', () => {
     let next;
     let req;
     let res;
@@ -76,41 +76,38 @@ describe('authenticator middleware', () => {
         next = jest.fn();
         req = {
             headers: {
-                Authentication: "valid.token.here"
+                authorization: "valid.token.here"
             },
-        };
-        res = {
-            redirect: jest.fn(), // Mock the redirect method
-        };
+        }; 
+        
     });
-
+ 
     afterEach(() => {
         jest.clearAllMocks();
     });
 
     it('should pass with a valid token', async () => {
-        const validTokenMock = {
-            account_username: 'testUser',
-            isExpired: jest.fn().mockResolvedValue(false),
+        res = {
+            send: jest.fn(),
+            status: jest.fn().mockReturnThis()
         };
 
-        const userMock = {
-            isActivated: jest.fn().mockResolvedValue(true),
-        };
+        const tokenValidationMock = (req.headers.authorization)
 
-        Token.getOneByToken.mockResolvedValue(validTokenMock);
-        User.getByUsername.mockResolvedValue(userMock);
+        const findOne = jest.spyOn(Token, "findOne").mockResolvedValueOnce(tokenValidationMock)
 
         await authenticator(req, res, next);
 
-        expect(Token.getOneByToken).toHaveBeenCalledWith('validTokenHere');
-        expect(validTokenMock.isExpired).toHaveBeenCalled();
-        expect(User.getByUsername).toHaveBeenCalledWith('testUser');
-        expect(userMock.isActivated).toHaveBeenCalled();
-        expect(res.locals.token).toBe('validTokenHere');
-        expect(res.locals.user).toBe('testUser');
-        expect(next).toHaveBeenCalled();
-        expect(res.redirect).not.toHaveBeenCalled();
+        expect(next).toHaveBeenCalledWith()
+        expect(findOne).toHaveBeenCalledWith({ "token": "valid.token.here" });
+        expect(res.status).not.toHaveBeenCalled()
+        // expect(validTokenMock.isExpired).toHaveBeenCalled();
+        // expect(User.getByUsername).toHaveBeenCalledWith('testUser');
+        // expect(userMock.isActivated).toHaveBeenCalled();
+        // expect(res.locals.token).toBe('validTokenHere');
+        // expect(res.locals.user).toBe('testUser');
+        // expect(next).toHaveBeenCalled();
+        // expect(res.redirect).not.toHaveBeenCalled();
     });
 
     // it('should redirect to "/" if token is empty', async () => {

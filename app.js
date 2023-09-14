@@ -7,7 +7,6 @@ const app = express()
 const notesRoute = require("./routes/notesRoute")
 const plannerRoute = require("./routes/plannerRoute")
 const authRoute = require('./routes/authRoute')
-const protectedRoute = require('./routes/protectedRoute')
 const authenticator = require("./middleware/authenticator")
 
 // Middleware
@@ -35,7 +34,7 @@ app.get('/', (req, res) => {
 app.use("/notes", authenticator, notesRoute)
 app.use("/planners", authenticator, plannerRoute)
 app.use('/auth', authRoute)
-app.use('/protected', protectedRoute)
+
 
 // *CATCH ALL FOR PUT & POST* (place last)
 app.put("*", (req, res) => {
