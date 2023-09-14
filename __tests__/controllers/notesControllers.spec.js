@@ -135,7 +135,7 @@ describe("Controllers tests", () => {
                 .mockResolvedValueOnce(sampleData[0].full2)
 
             const response = await request(app).post(`/notes/title`)
-                .set({'Accept': 'application/json', 'Authorization': 'tokenValue' })
+                .set({'Accept': 'application/json', 'Authorization': sampleData[1].token1 })
                 .send({title: sampleData[0].full2.title})
 
             expect(usernameFindQuery).toHaveBeenCalledTimes(1)
@@ -144,11 +144,12 @@ describe("Controllers tests", () => {
 
         test("Should return Status 200 and correct response for sucessful requests", async () => {
 
-            const findQuery = jest.spyOn(Note, 'find')
-                .mockResolvedValueOnce(sampleData[0].full2)
+            const usernameFindQuery = jest.spyOn(Token, "find").mockResolvedValueOnce(sampleData[0].full2.username)
+
+            const findQuery = jest.spyOn(Note, 'find').mockResolvedValueOnce(sampleData[0].full2)
 
             const response = await request(app).post(`/notes/title`)
-                .set({'Accept': 'application/json', 'Authorization': 'tokenValue' })
+                .set({'Accept': 'application/json', 'Authorization': sampleData[1].token1 })
                 .send({title: sampleData[0].full2.title})
 
             expect(response.statusCode).toBe(200);
@@ -156,6 +157,8 @@ describe("Controllers tests", () => {
         })
 
         test("Should return Status 404 and correct response for unsuccessful requests", async () => {
+
+            const usernameFindQuery = jest.spyOn(Token, "find").mockResolvedValueOnce(sampleData[0].full2.username)
 
             const findQuery = jest.spyOn(Note, 'find')
                 .mockRejectedValueOnce("error")
