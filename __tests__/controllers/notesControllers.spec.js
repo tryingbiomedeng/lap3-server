@@ -19,7 +19,7 @@ describe("Controllers tests", () => {
     let req;
     let res;
     let next;
-
+ 
     const sampleData = [
         {
             noIdDates1: {
@@ -36,8 +36,8 @@ describe("Controllers tests", () => {
                 subject: 'Sciene',
                 topic_tags: [ 'training' ],
                 content: 'yes, PE still needs notes',
-                date_created: "2023-09-12T14:40:08.461Z",
-                last_update: Date.now(),
+                createdAt: "2023-09-12T14:40:08.461Z",
+                updatedAt: Date.now(),
                 __v: 0
             },
             full2: {
@@ -47,8 +47,8 @@ describe("Controllers tests", () => {
                 "subject": "Subject2",
                 "topic_tags": ["tag2"],
                 "content": "content2",
-                "date_created": "2023-09-12T14:40:08.461Z",
-                "last_update": "2023-09-12T14:40:08.461Z",
+                "createdAt": "2023-09-12T14:40:08.461Z",
+                "updatedAt": "2023-09-12T14:40:08.461Z",
                 "__v": 0
             },
             noDC: {
@@ -58,8 +58,11 @@ describe("Controllers tests", () => {
                 subject: 'Sciene',
                 topic_tags: [ 'training' ],
                 content: 'yes, PE still needs notes',
-                last_update: Date.now()
+
             }
+        },
+        {
+            token1: "eyJhbGciOiJIUzI1N.eyJfaWQiOiI2NT3MDYwODV9.YMcjcoEF1Eydpt4lw"
         } 
     ]
 
@@ -127,14 +130,16 @@ describe("Controllers tests", () => {
         
         test("Should return trigger the Note.find() within the notesControllers.js", async () => {
 
-            const findQuery = jest.spyOn(Note, 'find')
+            const usernameFindQuery = jest.spyOn(Token, "find").mockResolvedValueOnce(sampleData[0].full2.username)
+            const noteFindQuery = jest.spyOn(Note, 'find')
                 .mockResolvedValueOnce(sampleData[0].full2)
 
             const response = await request(app).post(`/notes/title`)
                 .set({'Accept': 'application/json', 'Authorization': 'tokenValue' })
                 .send({title: sampleData[0].full2.title})
 
-            expect(findQuery).toHaveBeenCalledTimes(1);
+            expect(usernameFindQuery).toHaveBeenCalledTimes(1)
+            expect(noteFindQuery).toHaveBeenCalledTimes(1);
         })
 
         test("Should return Status 200 and correct response for sucessful requests", async () => {
