@@ -75,7 +75,7 @@ describe('Authenticator middleware tests', () => {
             headers: {
                 authorization: "valid.token.here"
             }
-        }; 
+        };
         res = {
             send: jest.fn(),
             status: jest.fn().mockReturnThis()

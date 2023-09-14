@@ -17,14 +17,14 @@ const seedDB = async () => {
                 content: "this is the first set of maths notes"
             },
             {
-                username: "thisUser2", 
+                username: "user2", 
                 title: "Best Notes EVER!", 
                 subject: "Spanish", 
                 topic_tags : ["weather", "reading", "higher exam"],
                 content: "Elite notes for my Spanish exam"
             },
             {
-                username: "iamauser3", 
+                username: "user3", 
                 title: "G.O.A.N", 
                 subject: "Maths", 
                 topic_tags : ["g.o.a.n"],
