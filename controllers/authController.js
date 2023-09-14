@@ -63,7 +63,7 @@ async function login(req, res) {
   }
 }
 
-async function findUser(req, res) {
+async function findUserByToken(req, res) {
   try {
     const token = req.headers.authorization
 
@@ -109,4 +109,4 @@ async function logout(req, res) {
   }
 }
 
-module.exports = { register, login, findUser, logout }
+module.exports = { register, login, findUserByToken, logout }
