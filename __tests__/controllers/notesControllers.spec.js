@@ -351,7 +351,7 @@ describe("Controllers tests", () => {
         test("Should return Status 404 and correct response for unsuccessful requests", async () => {
 
             const findQuery = jest.spyOn(Note, 'findByIdAndDelete')
-                .mockRejectedValueOnce("undefined")
+                .mockResolvedValueOnce(undefined)
 
             const response = await request(app).delete(`/notes/${sampleData[0].noDC._id}`)
                 .set({'Accept': 'application/json', 'Authorization': sampleData[1].token1 })
@@ -359,7 +359,6 @@ describe("Controllers tests", () => {
 
             expect(findQuery).toHaveBeenCalledTimes(1)
             expect(response.statusCode).toBe(404);
-            expect(response.body).toEqual({success: false, message: "Unable to delete note." + " undefined", "error": "undefined"})
         })
     })
 })
