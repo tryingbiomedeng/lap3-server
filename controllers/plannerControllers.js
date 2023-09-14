@@ -5,20 +5,26 @@ const getAll = async (req, res) => {
 		const planners = await Planner.find()
 		res.status(200).json(planners)
 	} catch (err) {
-		res.status(500).json({ message: err.message})
+		res.status(500).json({ 
+			"success": false,
+			"message": "Database error",
+			"error": err })
 	}
 }
 
 const getById = async (req, res) => {
 	try {
-    const { id } = req.params
-    const planner = await Planner.findById(id)
-    if (!planner) {
-      return res.status(404).json({ message: 'Planner not found' })
-    }
-    res.status(200).json(planner)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
+		const { id } = req.params
+		const planner = await Planner.findById(id)
+		if (!planner) {
+		return res.status(404).json({ message: 'Planner not found' })
+		}
+		res.status(200).json(planner)
+  } catch (err) {
+    res.status(500).json({ 
+		"success": false,
+		"message": "Id is required",
+		"error": err })
   }
 }
 
@@ -48,14 +54,14 @@ const plannerByUsername = async (req, res) => {
 
 const createPlanner = async (req, res) => {
 	try {
-    const { username, content, date, tag } = req.body
+		const { username, content, date, tag } = req.body
 
-    if (!username || !content || !date || !tag) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing required fields in the request body",
-      })
-    }
+		if (!username || !content || !date || !tag) {
+		return res.status(400).json({
+			success: false,
+			message: "Missing required fields",
+		})
+		}
 		const planner = await Planner.create(req.body)
 		res.status(201).json({
 			"success": true,
@@ -147,7 +153,7 @@ const plannerByTag = async (req, res) => {
   } catch (err) {
 		res.status(404).json({
 			"success": false,
-			"message": "Note not found",
+			"message": "Tag not found",
 			"error": err
 		})
   }

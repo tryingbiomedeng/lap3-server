@@ -1,6 +1,7 @@
 require('dotenv').config({ path: './test/.env.test' })
 const request = require('supertest')
 const server = require('../../app')
+const controller = require('../../controllers/plannerControllers')
 const Planner = require('../../Models/PlannerModel')
 
 describe("Controller tests", () => {
@@ -46,7 +47,15 @@ describe("Controller tests", () => {
       expect(res.statusCode).toEqual(200)
       expect(Array.isArray(res.body)).toBeTruthy()
       expect(res.body.length).toEqual(samplePlanners.length)
-
+      findSpy.mockRestore()
+    })
+    it('handles errors', async () => {
+      const findSpy = jest.spyOn(Planner, 'find').mockRejectedValueOnce(new Error('Database error'))
+      const res = await request(app).get('/planners')
+      expect(res.statusCode).toBe(500)
+      expect(res.body).toEqual({ success: false, 
+        message: 'Database error',
+        error: expect.any(Object) })
       findSpy.mockRestore()
     })
   })
@@ -55,10 +64,10 @@ describe("Controller tests", () => {
     it('should get a planner by Id', async () => {
       const findByIdSpy = jest.spyOn(Planner, 'findById').mockResolvedValue(samplePlanners[0])
       const createSpy = jest.spyOn(Planner, 'create').mockResolvedValue(samplePlanners[0])
-      const res = await request(app).get(`/planners/${samplePlanners[0]._id}`);
-      expect(res.statusCode).toEqual(200);
-      createSpy.mockRestore();
-      findByIdSpy.mockRestore();
+      const res = await request(app).get(`/planners/${samplePlanners[0]._id}`)
+      expect(res.statusCode).toEqual(200)
+      createSpy.mockRestore()
+      findByIdSpy.mockRestore()
       })
   
     it('should return 404 if planner not found by Id', async () => {
@@ -66,6 +75,16 @@ describe("Controller tests", () => {
       const res = await request(app).get('/planners/invalid-id')
       expect(res.statusCode).toEqual(404)
       findByIdSpy.mockRestore()
+    })
+    
+    it('handles errors', async () => {
+      const findSpy = jest.spyOn(Planner, 'findById').mockRejectedValueOnce(new Error('Id is required'))
+      const res = await request(app).get('/planners/invalid-id')
+      expect(res.statusCode).toBe(500)
+      expect(res.body).toEqual({ success: false, 
+        message: 'Id is required',
+        error: expect.any(Object) })
+      findSpy.mockRestore()
     })
   }),
 
@@ -89,19 +108,32 @@ describe("Controller tests", () => {
       expect(res.body.success).toEqual(false)
       findSpy.mockRestore()
     })
+
+    it('handles errors', async () => {
+      const findSpy = jest.spyOn(Planner, 'find').mockRejectedValueOnce(new Error('Internal server error'))
+      const username = 'nonexistentuser'
+      const res = await request(app).get(`/planners/user/${username}`)
+      expect(res.statusCode).toBe(500)
+      expect(res.body).toEqual({ 
+        success: false,
+        message: 'Internal server error',
+        error: expect.any(Object)
+      })
+      findSpy.mockRestore()
+    })
   }),
 
-describe('GET /planners/date/:date', () => {
-  it('should get planner by date', async () => {
-    const findSpy = jest.spyOn(Planner, 'find').mockResolvedValue(samplePlanners)
-    jest.spyOn(Planner, 'insertMany').mockResolvedValue()
-    const date = samplePlanners[0].date
-    const res = await request(app).get(`/planners/date/${date}`)
-    expect(res.statusCode).toEqual(200)
-    expect(Array.isArray(res.body.planners)).toBeTruthy()
-    expect(res.body.success).toEqual(true)
-    findSpy.mockRestore()
-  })
+  describe('GET /planners/date/:date', () => {
+    it('should get planner by date', async () => {
+      const findSpy = jest.spyOn(Planner, 'find').mockResolvedValue(samplePlanners)
+      jest.spyOn(Planner, 'insertMany').mockResolvedValue()
+      const date = samplePlanners[0].date
+      const res = await request(app).get(`/planners/date/${date}`)
+      expect(res.statusCode).toEqual(200)
+      expect(Array.isArray(res.body.planners)).toBeTruthy()
+      expect(res.body.success).toEqual(true)
+      findSpy.mockRestore()
+    })
 
   it('returns 404 if no planners found by date', async () => {
     const findSpy = jest.spyOn(Planner, 'find').mockResolvedValue([])
@@ -110,6 +142,19 @@ describe('GET /planners/date/:date', () => {
       expect(res.statusCode).toEqual(404)
       expect(res.body.success).toEqual(false)
       findSpy.mockRestore()
+    })
+
+  it('handles errors', async () => {
+    const findSpy = jest.spyOn(Planner, 'find').mockRejectedValueOnce(new Error('Date not found'))
+    const date = '1999-08-02'
+    const res = await request(app).get(`/planners/date/${date}`)
+    expect(res.statusCode).toBe(404)
+    expect(res.body).toEqual({ 
+      success: false,
+      message: 'Date not found',
+      error: expect.any(Object)
+    })
+    findSpy.mockRestore()
     })
   }),
 
@@ -132,8 +177,21 @@ describe('GET /planners/date/:date', () => {
         expect(res.statusCode).toEqual(404)
         expect(res.body.success).toEqual(false)
         findSpy.mockRestore()
+    })
+
+    it('handles errors', async () => {
+      const findSpy = jest.spyOn(Planner, 'find').mockRejectedValueOnce(new Error('Tag not found'))
+      const tag = 'Food'
+      const res = await request(app).get(`/planners/tag/${tag}`)
+      expect(res.statusCode).toBe(404)
+      expect(res.body).toEqual({ 
+        success: false,
+        message: 'Tag not found',
+        error: expect.any(Object)
       })
-    }),
+      findSpy.mockRestore()
+    })
+  }),
 
   describe('POST /planners', () => {
     it('should create a new planner', async () => {
@@ -144,9 +202,21 @@ describe('GET /planners/date/:date', () => {
       createSpy.mockRestore()
     })
 
-    it('should return 400 if missing required fields in the request body', async () => {
+    it('should return 400 if missing required fields', async () => {
       const res = await request(app).post('/planners').send({})
       expect(res.statusCode).toEqual(400)
+    })
+
+    it('throws error if event cannot be created', async () => {
+      const createSpy = jest.spyOn(Planner, 'create').mockRejectedValueOnce(new Error('Unable to create new event'))
+      const res = await request(app).post(`/planners`).send({})
+      expect(res.statusCode).toBe(404)
+      expect(res.body).toEqual({ 
+        success: false,
+        message: 'Unable to create new event',
+        error: expect.any(Object)
+      })
+      createSpy.mockRestore()
     })
   }),
 
