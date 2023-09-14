@@ -2,6 +2,7 @@ require("dotenv").config({path: './test/.env.test'})
 const mongoose = require("mongoose")
 const notesController = require("../../controllers/notesControllers")
 const Note = require("../../Models/NotesModel")
+const Token = require("../../Models/TokenModel")
 
 
 //basic api imports
@@ -9,8 +10,14 @@ const request = require("supertest");
 const server = require("../../app");
 const { response } = require("express");
 
+jest.mock("../../Models/TokenModel")
+jest.mock("../../Models/NotesModel")
+
 describe("Controllers tests", () => {
     let app;
+    let req;
+    let res;
+    let next;
 
     const sampleData = [
         {
@@ -108,14 +115,14 @@ describe("Controllers tests", () => {
         })
     }),
 
-    describe("GET /notes/title TESTS",() => {
+    describe("POST /notes/title TESTS",() => {
         
         test("Should return trigger the Note.find() within the notesControllers.js", async () => {
 
             const findQuery = jest.spyOn(Note, 'find')
                 .mockResolvedValueOnce(sampleData[0].full2)
 
-            const response = await request(app).get(`/notes/title`)
+            const response = await request(app).post(`/notes/title`)
                 .set({'Accept': 'application/json', 'Authorization': 'tokenValue' })
                 .send({title: sampleData[0].full2.title})
 
@@ -127,7 +134,7 @@ describe("Controllers tests", () => {
             const findQuery = jest.spyOn(Note, 'find')
                 .mockResolvedValueOnce(sampleData[0].full2)
 
-            const response = await request(app).get(`/notes/title`)
+            const response = await request(app).post(`/notes/title`)
                 .set({'Accept': 'application/json', 'Authorization': 'tokenValue' })
                 .send({title: sampleData[0].full2.title})
 
@@ -140,7 +147,7 @@ describe("Controllers tests", () => {
             const findQuery = jest.spyOn(Note, 'find')
                 .mockRejectedValueOnce("error")
 
-            const response = await request(app).get(`/notes/title`)
+            const response = await request(app).post(`/notes/title`)
                 .set({'Accept': 'application/json', 'Authorization': 'tokenValue' })
 
             expect(response.statusCode).toBe(404);

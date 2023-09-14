@@ -1,13 +1,16 @@
 require("dotenv").config({path: './test/.env.test'})
+const Note = require("../Models/NotesModel")
+const Token = require("../Models/TokenModel")
 
 //basic api imports
 const request = require("supertest");
 const server = require("../app");
 
-
-// TODO: Auth Imports
-
 // TODO Middleware Imports
+const authenticator = require("../middleware/authenticator")
+
+jest.mock("../Models/TokenModel")
+jest.mock("../Models/NotesModel")
 
 // TODO Security Imports
 
@@ -60,3 +63,81 @@ describe("API tests", () => {
         })
     })
 })
+
+describe('Authenticator middleware tests', () => {
+    let next;
+    let req;
+    let res;
+
+    beforeEach(() => {
+        next = jest.fn();
+        req = {
+            headers: {
+                authorization: "valid.token.here"
+            }
+        }; 
+        res = {
+            send: jest.fn(),
+            status: jest.fn().mockReturnThis()
+        };
+    })
+ 
+    afterEach(() => {
+        jest.clearAllMocks();
+    })
+
+    it('Should pass to next() with a valid token', async () => {
+
+
+        const tokenValidationMock = (req.headers.authorization)
+
+        const findOne = jest.spyOn(Token, "findOne").mockResolvedValueOnce(tokenValidationMock)
+
+        await authenticator(req, res, next);
+
+        expect(next).toHaveBeenCalledWith()
+        expect(findOne).toHaveBeenCalledWith({ "token": "valid.token.here" });
+        expect(res.status).not.toHaveBeenCalled()
+    }),
+
+    it('Should return 401 when no token is provided in header', async () => {
+
+        req = {
+            headers: {
+        
+            }
+        }; 
+
+        const tokenValidationMock = (req.headers)
+
+        const findOne = jest.spyOn(Token, "findOne").mockRejectedValueOnce(tokenValidationMock)
+
+        await authenticator(req, res, next);
+
+        expect(next).not.toHaveBeenCalled()
+        expect(findOne).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledWith(401)
+        expect(res.send).toHaveBeenCalledWith('Access denied. No token provided.')
+    })
+
+
+    it('Should return 403 when provided token is Invalid', async () => {
+
+        req = {
+            headers: {
+                authorization: "valid.token.here"
+            }
+        }; 
+
+        const invalidToken = ("invalid")
+
+        const findOne = jest.spyOn(Token, "findOne").mockRejectedValueOnce(invalidToken)
+
+        await authenticator(req, res, next);
+
+        expect(next).not.toHaveBeenCalled()
+        expect(findOne).toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledWith(403)
+        expect(res.send).toHaveBeenCalledWith('invalid token')
+    })
+});

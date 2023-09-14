@@ -47,7 +47,7 @@ describe("Controller tests", () => {
       expect(Array.isArray(res.body)).toBeTruthy()
       expect(res.body.length).toEqual(samplePlanners.length)
 
-      findSpy.mockRestore()
+      // findSpy.mockRestore()
     })
   })
 
@@ -65,7 +65,7 @@ describe("Controller tests", () => {
       const findByIdSpy = jest.spyOn(Planner, 'findById').mockResolvedValue(null)
       const res = await request(app).get('/planners/invalid-id')
       expect(res.statusCode).toEqual(404)
-      findByIdSpy.mockRestore()
+      // findByIdSpy.mockRestore()
     })
   }),
 
@@ -78,7 +78,7 @@ describe("Controller tests", () => {
       expect(res.statusCode).toEqual(200)
       expect(Array.isArray(res.body.user)).toBeTruthy()
       expect(res.body.success).toEqual(true)
-      findSpy.mockRestore()
+      // findSpy.mockRestore()
     })
 
     it('should return 404 if no planners found by username', async () => {
@@ -87,7 +87,7 @@ describe("Controller tests", () => {
       const res = await request(app).get(`/planners/user/${username}`)
       expect(res.statusCode).toEqual(404)
       expect(res.body.success).toEqual(false)
-      findSpy.mockRestore()
+      // findSpy.mockRestore()
     })
   }),
 
@@ -141,7 +141,7 @@ describe('GET /planners/date/:date', () => {
       const res = await request(app).post('/planners').send(samplePlanners[0])
       expect(res.statusCode).toEqual(201)
       expect(res.body.respond.username).toEqual(samplePlanners[0].username)
-      createSpy.mockRestore()
+      // createSpy.mockRestore()
     })
 
     it('should return 400 if missing required fields in the request body', async () => {
@@ -172,7 +172,7 @@ describe('GET /planners/date/:date', () => {
         .patch('/planners/invalid-id')
         .send({ content: 'Updated content' })
       expect(res.statusCode).toEqual(404)
-      findByIdAndUpdateSpy.mockRestore()
+      // findByIdAndUpdateSpy.mockRestore()
     })
   }),
 
@@ -189,7 +189,7 @@ describe('GET /planners/date/:date', () => {
       const findByIdAndDeleteSpy = jest.spyOn(Planner, 'findByIdAndDelete').mockResolvedValueOnce("error")
       const res = await request(app).delete('/planners/invalid-id')
       expect(res.statusCode).toEqual(204)
-      findByIdAndDeleteSpy.mockRestore()
+      // findByIdAndDeleteSpy.mockRestore()
     })
   })
 })

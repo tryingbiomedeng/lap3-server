@@ -5,9 +5,9 @@ const { notesByUsername, createNote, updateNote, noteByTitle, notesByTag, destro
 
 notesRouter.get("/user/:username", notesByUsername)
 
-notesRouter.get("/title", noteByTitle)
-
 notesRouter.get("/tag/:tag", notesByTag)
+
+notesRouter.post("/title", noteByTitle)
 
 notesRouter.post("/", createNote)
 // patching by id since the title can change

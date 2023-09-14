@@ -9,18 +9,18 @@ const seedDB = async () => {
     console.log("Awaiting Note Seed 📝🌱")
     await Planner.insertMany([
       { 
-        username: "user 1", 
+        username: "user1", 
         date: "11/02/23", 
         content: "sample", 
         tag: "school" 
       },
       { 
-        username: "user 2", 
+        username: "user2", 
         date: "10/02/23", 
         content: "sample2", 
         tag: "home" },
       { 
-        username: "user 3", 
+        username: "user3", 
         date: "11/09/23", 
         content: "sample3", 
         tag: "work" }
