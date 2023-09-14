@@ -63,7 +63,6 @@ const updateNote = async (req, res) => {
                     subject: data.subject,
                     topic_tags: data.topic_tags,
                     content: data.content,
-                    last_update: data.last_update
                 }
             }, 
             { 

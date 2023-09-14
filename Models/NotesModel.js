@@ -17,16 +17,6 @@ const notesSchema = new mongoose.Schema(
         content: {
             type: String,
             default: ""
-        },
-        date_created: {
-            type: Date,
-            required: true,
-            default: Date.now()
-        },
-        last_update: {
-            type: Date,
-            required: true,
-            default: Date.now()
         }
     },
     {timestamps: true}
