@@ -49,12 +49,14 @@ async function login(req, res) {
       {
         username: username,  
         token: token
-      } 
+      }
     );
     await newToken.save()
     res.status(201).json({
       "success": true,
-      "response": {token: newToken.token}
+      "response": {
+        token: newToken.token,
+        username: newToken.username}
     })
   } catch (err) {
     res.status(500).send(err.message)
