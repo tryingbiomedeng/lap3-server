@@ -67,7 +67,7 @@ describe("API tests", () => {
     })
 })
 
-describe('authenticator middleware tests', () => {
+describe('Authenticator middleware tests', () => {
     let next;
     let req;
     let res;
@@ -86,7 +86,7 @@ describe('authenticator middleware tests', () => {
         jest.clearAllMocks();
     });
 
-    it('should pass with a valid token', async () => {
+    it('Should pass to next() with a valid token', async () => {
         res = {
             send: jest.fn(),
             status: jest.fn().mockReturnThis()
@@ -101,13 +101,28 @@ describe('authenticator middleware tests', () => {
         expect(next).toHaveBeenCalledWith()
         expect(findOne).toHaveBeenCalledWith({ "token": "valid.token.here" });
         expect(res.status).not.toHaveBeenCalled()
-        // expect(validTokenMock.isExpired).toHaveBeenCalled();
-        // expect(User.getByUsername).toHaveBeenCalledWith('testUser');
-        // expect(userMock.isActivated).toHaveBeenCalled();
-        // expect(res.locals.token).toBe('validTokenHere');
-        // expect(res.locals.user).toBe('testUser');
-        // expect(next).toHaveBeenCalled();
-        // expect(res.redirect).not.toHaveBeenCalled();
+    });
+
+    it('Should return 401 when no token is provided in header', async () => {
+        res = {
+            send: jest.fn(),
+            status: jest.fn().mockReturnThis(401)
+        };
+
+        req = {
+            headers: {}
+        }
+
+        const tokenValidationMock = (req.headers.authorization)
+
+        const findOne = jest.spyOn(Token, "findOne").mockRejectedValueOnce(tokenValidationMock)
+
+        await authenticator(req, res, next);
+
+        expect(next).not.toHaveBeenCalled()
+        expect(findOne).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledWith(401)
+        expect(res.send).toHaveBeenCalledWith('Access denied. No token provided.')
     });
 
     // it('should redirect to "/" if token is empty', async () => {

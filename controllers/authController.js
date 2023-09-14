@@ -47,9 +47,9 @@ async function login(req, res) {
     const token = jwt.sign({ _id: user._id }, secretKey)
     const newToken = new Token(
       {
-        username: username, 
+        username: username,  
         token: token
-      }
+      } 
     );
     await newToken.save()
     res.status(201).json({
