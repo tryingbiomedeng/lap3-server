@@ -2,9 +2,13 @@ require('dotenv').config({ path: './test/.env.test' })
 const request = require('supertest')
 const server = require('../../app')
 const Planner = require('../../Models/PlannerModel')
+const authenticator = require("../../middleware/authenticator")
+
+// to allow for middleware to be skipped
+jest.mock("../../middleware/authenticator", () => jest.fn((req,res,next) => next()))
 
 describe("Controller tests", () => {
-  let app 
+  let app
   const samplePlanners = [
     {
       _id: '6500787545ec1cab08690bf8',
