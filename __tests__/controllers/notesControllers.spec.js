@@ -8,7 +8,6 @@ const authenticator = require("../../middleware/authenticator")
 //basic api imports
 const request = require("supertest");
 const server = require("../../app");
-const { response } = require("express");
 
 jest.mock("../../Models/TokenModel")
 jest.mock("../../Models/NotesModel")
