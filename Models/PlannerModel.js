@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const plannerSchema = mongoose.Schema({
+const plannerSchema = new mongoose.Schema({
     username: {
         type:String,
         required: true
@@ -19,4 +19,5 @@ const plannerSchema = mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Planner', plannerSchema)
+const Planner = mongoose.model('Planner', plannerSchema)
+module.exports = Planner

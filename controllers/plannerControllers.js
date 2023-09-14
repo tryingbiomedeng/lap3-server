@@ -111,11 +111,17 @@ const updatePlanner = async (req, res) => {
 
 const plannerByDate = async (req, res) => {
 	try {
-		if (req.params.date){
-			res.status(200).json({
-			"success": true
+		const planners = await Planner.find({ date: req.params.date })
+		if(!planners || planners.length === 0) {
+			return res.status(404).json({
+				success: false,
+				message: 'No planners found for date'  
+			})
+		}
+		res.status(200).json({
+			success: true, 
+			planners 
 		})
-	}
   } catch (err) {
 		res.status(404).json({
 			"success": false,
@@ -127,10 +133,17 @@ const plannerByDate = async (req, res) => {
 
 const plannerByTag = async (req, res) => {
 	try {
-		if (req.params.tag)
-		{res.status(200).json({
-			"success": true
-		})}
+		const planners = await Planner.find({ tag: req.params.tag })
+		if(!planners || planners.length === 0) {
+			return res.status(404).json({
+				success: false,
+				message: 'No planners found for tag'  
+			})
+		}
+		res.status(200).json({
+			success: true, 
+			planners 
+		})
   } catch (err) {
 		res.status(404).json({
 			"success": false,
@@ -142,25 +155,21 @@ const plannerByTag = async (req, res) => {
 
 const destroy = async (req, res) => {
 	try {
-		if (req.params.id) {
-			const deletedPlanner = await Planner.findByIdAndDelete(req.params.id)
-			if (!deletedPlanner) {
-        return res.status(404).json({"message": "Planner event not found"});
-      }
-
-			await planner.remove()
-
-			res.status(204).json({
-			"success": true
+		const deletedPlanner = await Planner.findByIdAndDelete(req.params.id)
+		if(!deletedPlanner) {
+			return res.status(404).json({
+			message: 'Planner not found'  
 			})
 		}
-  } catch (err) {
-		res.status(404).json({
-			"success": false,
-			"message": "Unable to delete planner",
-			"error": err
+		res.status(204).json({
+			success: true
 		})
-  }
+		} catch (err) {
+		res.status(404).json({
+			success: false,
+			message: 'Error deleting planner' 
+		})
+	}
 }
 
 module.exports = {
