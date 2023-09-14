@@ -214,7 +214,7 @@ describe("Controller tests", () => {
 
     it('throws error if event cannot be created', async () => {
       const createSpy = jest.spyOn(Planner, 'create').mockRejectedValueOnce(new Error('Unable to create new event'))
-      const res = await request(app).post(`/planners`).send({})
+      const res = await request(app).post(`/planners`).send(samplePlanners[0])
       expect(res.statusCode).toBe(404)
       expect(res.body).toEqual({ 
         success: false,
