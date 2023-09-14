@@ -33,14 +33,14 @@ const plannerByUsername = async (req, res) => {
     const user = req.params.username;
     const planner = await Planner.find({ username: { $eq: user } })
     if (planner.length === 0) {
-      res.status(404).json({
-        "success": false,
-        "message": "Planner for user not found"
+      res.status(200).json({
+        "success": true,
+        "tasks": []
       })
     } else {
       res.status(200).json({
         "success": true,
-        "user": planner
+        "tasks": planner
       })
     }
   } catch (err) {
