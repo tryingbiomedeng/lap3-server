@@ -63,6 +63,29 @@ async function login(req, res) {
   }
 }
 
+async function findUserByToken(req, res) {
+  try {
+    const token = req.headers.authorization
+
+    const username = await Token.find(
+      {token: {$eq: req.headers.authorization}}, {username: 1, _id: 0}
+    )
+    if (!username) {
+      throw new Error("Username not found")
+    }
+    res.status(200).json({
+      "success": true,
+      "response": {username: username}
+    })
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+      error: error
+    })
+  }
+}
+
 async function logout(req, res) {
   try {
     
@@ -86,5 +109,4 @@ async function logout(req, res) {
   }
 }
 
-
-module.exports = { register, login, logout }
+module.exports = { register, login, findUserByToken, logout }

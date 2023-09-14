@@ -131,7 +131,6 @@ const destroy = async (req, res) => {
    try {
         const idx = req.params.id     
         const result = await Note.findByIdAndDelete(idx)
-        console.log(result)
         if (!result) {
             throw new Error("Note ID not found")
         }
