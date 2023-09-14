@@ -6,9 +6,6 @@ const Token = require("../Models/TokenModel")
 const request = require("supertest");
 const server = require("../app");
 
-
-// TODO: Auth Imports
-
 // TODO Middleware Imports
 const authenticator = require("../middleware/authenticator")
 

@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
-// const secretKey = crypto.randomBytes(64).toString('hex')
 const Token = require("../Models/TokenModel")
 
 async function authenticateToken(req, res, next) {
@@ -13,11 +12,6 @@ async function authenticateToken(req, res, next) {
     return res.status(403).send("Invalid token")
   }
   next()
-  // jwt.verify(token, secretKey, (err, user) => {
-  //   if (err) return res.status(403).send('Invalid token.')
-  //   req.user = user;
-  //   next()
-  // })
 }
 
 module.exports = authenticateToken
