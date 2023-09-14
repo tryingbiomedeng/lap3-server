@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const notesController = require("../../controllers/notesControllers")
 const Note = require("../../Models/NotesModel")
 const Token = require("../../Models/TokenModel")
-
+const authenticator = require("../../middleware/authenticator")
 
 //basic api imports
 const request = require("supertest");
@@ -12,6 +12,7 @@ const { response } = require("express");
 
 jest.mock("../../Models/TokenModel")
 jest.mock("../../Models/NotesModel")
+jest.mock("../../middleware/authenticator", () => jest.fn((req,res,next) => next()))
 
 describe("Controllers tests", () => {
     let app;
@@ -59,7 +60,7 @@ describe("Controllers tests", () => {
                 content: 'yes, PE still needs notes',
                 last_update: Date.now()
             }
-        }
+        } 
     ]
 
     beforeAll(() => {
@@ -70,6 +71,13 @@ describe("Controllers tests", () => {
         jest.clearAllMocks();
         app.close();
     });
+
+    beforeEach(() => {
+        req = {
+            headers: {},
+            body: {}
+        }
+    })
 
     afterEach(() => {
         jest.clearAllMocks()
