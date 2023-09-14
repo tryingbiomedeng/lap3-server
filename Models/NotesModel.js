@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const notesSchema = mongoose.Schema(
+const notesSchema = new mongoose.Schema(
     {
         username: {
             type: String,

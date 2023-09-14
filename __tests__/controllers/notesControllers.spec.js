@@ -10,7 +10,7 @@ const server = require("../../app");
 const { response } = require("express");
 
 describe("Controllers tests", () => {
-    let app 
+    let app;
 
     const sampleData = [
         {
