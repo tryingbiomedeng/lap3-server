@@ -12,7 +12,7 @@ const authenticator = require("../middleware/authenticator")
 jest.mock("../Models/TokenModel")
 jest.mock("../Models/NotesModel")
 
-// TODO Security Imports
+// TODO Security Imports 
 
 describe("API tests", () => {
     let app;
@@ -125,19 +125,19 @@ describe('Authenticator middleware tests', () => {
 
         req = {
             headers: {
-                authorization: "valid.token.here"
+                authorization: "invalid.token.here"
             }
-        }; 
+        };  
 
-        const invalidToken = ("invalid")
+        const invalidToken = (req.headers.authorization)
 
-        const findOne = jest.spyOn(Token, "findOne").mockRejectedValueOnce(invalidToken)
-
+        const findOne = jest.spyOn(Token, "findOne").mockResolvedValueOnce(invalidToken)
+ 
         await authenticator(req, res, next);
-
+  
         expect(next).not.toHaveBeenCalled()
         expect(findOne).toHaveBeenCalled()
         expect(res.status).toHaveBeenCalledWith(403)
-        expect(res.send).toHaveBeenCalledWith('invalid token')
+        expect(res.send).toHaveBeenCalledWith('Invalid token')
     })
 });
