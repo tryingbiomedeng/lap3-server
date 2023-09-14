@@ -47,9 +47,9 @@ describe("Controller tests", () => {
       expect(res.statusCode).toEqual(200)
       expect(Array.isArray(res.body)).toBeTruthy()
       expect(res.body.length).toEqual(samplePlanners.length)
-<<<<<<< HEAD
       findSpy.mockRestore()
     })
+    
     it('handles errors', async () => {
       const findSpy = jest.spyOn(Planner, 'find').mockRejectedValueOnce(new Error('Database error'))
       const res = await request(app).get('/planners')
@@ -58,10 +58,6 @@ describe("Controller tests", () => {
         message: 'Database error',
         error: expect.any(Object) })
       findSpy.mockRestore()
-=======
-
-      // findSpy.mockRestore()
->>>>>>> 1ed5036a44e110095de8530d6bbfe8ed83dffad9
     })
   })
 
@@ -79,7 +75,7 @@ describe("Controller tests", () => {
       const findByIdSpy = jest.spyOn(Planner, 'findById').mockResolvedValue(null)
       const res = await request(app).get('/planners/invalid-id')
       expect(res.statusCode).toEqual(404)
-      // findByIdSpy.mockRestore()
+      findByIdSpy.mockRestore()
     })
     
     it('handles errors', async () => {
@@ -102,7 +98,7 @@ describe("Controller tests", () => {
       expect(res.statusCode).toEqual(200)
       expect(Array.isArray(res.body.user)).toBeTruthy()
       expect(res.body.success).toEqual(true)
-      // findSpy.mockRestore()
+      findSpy.mockRestore()
     })
 
     it('should return 404 if no planners found by username', async () => {
@@ -111,7 +107,7 @@ describe("Controller tests", () => {
       const res = await request(app).get(`/planners/user/${username}`)
       expect(res.statusCode).toEqual(404)
       expect(res.body.success).toEqual(false)
-      // findSpy.mockRestore()
+      findSpy.mockRestore()
     })
 
     it('handles errors', async () => {
@@ -204,7 +200,7 @@ describe("Controller tests", () => {
       const res = await request(app).post('/planners').send(samplePlanners[0])
       expect(res.statusCode).toEqual(201)
       expect(res.body.respond.username).toEqual(samplePlanners[0].username)
-      // createSpy.mockRestore()
+      createSpy.mockRestore()
     })
 
     it('should return 400 if missing required fields', async () => {
@@ -247,7 +243,7 @@ describe("Controller tests", () => {
         .patch('/planners/invalid-id')
         .send({ content: 'Updated content' })
       expect(res.statusCode).toEqual(404)
-      // findByIdAndUpdateSpy.mockRestore()
+      findByIdAndUpdateSpy.mockRestore()
     })
   }),
 
@@ -264,7 +260,7 @@ describe("Controller tests", () => {
       const findByIdAndDeleteSpy = jest.spyOn(Planner, 'findByIdAndDelete').mockResolvedValueOnce("error")
       const res = await request(app).delete('/planners/invalid-id')
       expect(res.statusCode).toEqual(204)
-      // findByIdAndDeleteSpy.mockRestore()
+      findByIdAndDeleteSpy.mockRestore()
     })
   })
 })

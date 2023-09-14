@@ -5,9 +5,8 @@ const plannerSchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type:Date,
+        type:String,
         required: true,
-        default: Date.now()
     },
     content: {
         type:String,
