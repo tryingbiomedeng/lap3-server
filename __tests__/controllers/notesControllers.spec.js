@@ -238,7 +238,7 @@ describe("Controllers tests", () => {
             const response = await request(app).post(`/notes`)
                 .set({'Accept': 'application/json', 'Authorization': sampleData[1].token1 })
                 .send({body: sampleData[0].full2})
-
+ 
             expect(noteInstance).toHaveBeenCalledTimes(1);
         }),
 
