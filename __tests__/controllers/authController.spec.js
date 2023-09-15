@@ -9,13 +9,15 @@ const authenticator = require("../../middleware/authenticator")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
+const secretKey = crypto.randomBytes(64).toString('hex')
 
 //basic api imports
 const request = require("supertest");
 const server = require("../../app");
-// jest.mock("../../Models/TokenModel")
-jest.mock("../../Models/User")
 jest.mock("../../middleware/authenticator", () => jest.fn((req,res,next) => next()))
+jest.mock("../../Models/TokenModel")
+jest.mock("../../Models/User")
+
 
 describe("AuthController Tests", () => {
     let app;
@@ -47,13 +49,6 @@ describe("AuthController Tests", () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-    })
-
-    beforeEach(() => {
-        req = {
-            headers: {},
-            body: {}
-        }
     })
 
     describe("GET /auth/find Tests", () => {
@@ -112,18 +107,35 @@ describe("AuthController Tests", () => {
         })
     }),
 
-    describe("POST /auth/logout", () => {
+    describe("DELETE /auth/logout", () => {
 
         test("Should return 200 if user was logged in and token deletion was successful", async () => {
 
-            const tokenFind = jest.spyOn(Token, "findOneAndDelete").mockResolvedValue({deletedCount: 1})
+            const loggedOutUser = jest.spyOn(User, "findOneAndUpdate").mockResolvedValueOnce(sampleData.tokenFull)
+
+            const tokenFind = jest.spyOn(Token, "findOneAndDelete").mockResolvedValueOnce({deletedCount: 1})
  
-            const response = await request(app).post(`/auth/logout`)
+            const response = await request(app).delete(`/auth/logout`)
                 .set({'Accept': 'application/json', 'Authorization': sampleData.token })
 
             expect(tokenFind).toHaveBeenCalledTimes(1)
             expect(loggedOutUser).toHaveBeenCalledTimes(1)
             expect(response.status).toBe(200)
+        }),
+
+        test("Should throw error and 404 if token deletion was unsuccessful", async () => {
+
+            const loggedOutUser = jest.spyOn(User, "findOneAndUpdate").mockResolvedValueOnce(sampleData.tokenFull)
+
+            const tokenFind = jest.spyOn(Token, "findOneAndDelete").mockResolvedValueOnce({deletedCount: 0})
+ 
+            const response = await request(app).delete(`/auth/logout`)
+                .set({'Accept': 'application/json', 'Authorization': sampleData.token })
+
+            expect(tokenFind).toHaveBeenCalledTimes(1)
+            expect(loggedOutUser).not.toHaveBeenCalled()
+            expect(response.status).toBe(404)
+            expect(response.text).toContain("false")
         })
     })
 });
