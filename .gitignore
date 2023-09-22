@@ -4,3 +4,5 @@ node_modules/
 coverage/
 .env
 tests
+__tests__/
+jest.config.js
