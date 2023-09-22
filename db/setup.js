@@ -1,6 +1,4 @@
-require("dotenv").config({ 
-    path: "prod" === process.env.NODE_ENV ? './.env.prod' : './.env'
-})
+require("dotenv").config()
 const mongoose = require("mongoose");
  
 //could add a conditional based on ENV being PROD or DEV
