@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "build": "node index.js",
     "seed-planner": "node db/plannerSeed.js",
     "start-testing-db": "docker run --rm -d -p 9090:27017 --name testing-db mongo",
     "seed-notes": "node db/notesSeed.js",

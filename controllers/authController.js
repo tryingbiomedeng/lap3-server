@@ -12,6 +12,7 @@ async function register(req, res) {
     // password processing done within User Model
     const user = new User({ username, password })
     const response = await user.save()
+
     res.status(201).json({
       success: true,
       response: response
